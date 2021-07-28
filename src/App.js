@@ -1,13 +1,45 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
+import Bookshelf from './Bookshelf'
+import AddBook from './AddBook'
 
 class BooksApp extends React.Component {
   state = {
+    books: [],
+  }
 
+  async componentDidMount() {
+    const books = await BooksAPI.getAll()
+    this.setState({ books })
+  }
+
+  editShelf = (book, newShelf) => {
+    BooksAPI.update(book, newShelf)
+      .then(() => {
+        book.shelf = newShelf
+        this.setState(state => ({
+          books: state.books.filter(b => b.id !== book.id).concat(book)
+        }))
+      })
+  }
+
+  setBooks = shelf => {
+    this.setState((currentState) => ({
+      books: currentState.books.map(book => {
+        if (!book.shelf) {
+          book.shelf = 'none'
+          BooksAPI.update(book, 'none')
+        }
+        return book
+      })
+    }))
   }
 
   render() {
+    const currentlyReadingBooks = this.state.books.filter(book => book.shelf === 'currentlyReading')
+    const wantToReadBooks = this.state.books.filter(book => book.shelf === 'wantToRead')
+    const readBooks = this.state.books.filter(book => book.shelf === 'read')
     return (
       <div className="app">
         <div className="list-books">
