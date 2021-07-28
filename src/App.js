@@ -3,6 +3,7 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Bookshelf from './Bookshelf'
 import AddBook from './AddBook'
+import { Link, Route } from 'react-router-dom'
 
 class BooksApp extends React.Component {
   state = {
@@ -42,33 +43,38 @@ class BooksApp extends React.Component {
     const readBooks = this.state.books.filter(book => book.shelf === 'read')
     return (
       <div className="app">
-        <div className="list-books">
-          <div className="list-books-title">
-            <h1>MyReads</h1>
-          </div>
-          <div className="list-books-content">
-            <div>
-              <Bookshelf 
-                shelfTitle="Currently Reading"
-                books={currentlyReadingBooks}
-                onChangeShelf={this.editShelf}
-              />
-              <Bookshelf
-                shelfTitle="Want to Read"
-                books={wantToReadBooks}
-                onChangeShelf={this.editShelf}
-              />
-              <Bookshelf
-                shelfTitle="Read"
-                books={readBooks}
-                onChangeShelf={this.editShelf}
-              />
+        <Route exact path='/' render={() => (
+          <div className="list-books">
+            <div className="list-books-title">
+              <h1>MyReads</h1>
+            </div>
+            <div className="list-books-content">
+              <div>
+                <Bookshelf 
+                  shelfTitle="Currently Reading"
+                  books={currentlyReadingBooks}
+                  onChangeShelf={this.editShelf}
+                />
+                <Bookshelf
+                  shelfTitle="Want to Read"
+                  books={wantToReadBooks}
+                  onChangeShelf={this.editShelf}
+                />
+                <Bookshelf
+                  shelfTitle="Read"
+                  books={readBooks}
+                  onChangeShelf={this.editShelf}
+                />
+              </div>
+            </div>
+            <div className="open-search">
+              <Link to='search'><button>Add a book</button></Link>
             </div>
           </div>
-          <div className="open-search">
-            <Link to='search'><button>Add a book</button></Link>
-          </div>
-        </div>
+        )}/>
+        <Route path='/search'>
+          <AddBook books={this.state.books} onChangeShelf={this.editShelf}/>
+        </Route>
       </div>
     )
   }
