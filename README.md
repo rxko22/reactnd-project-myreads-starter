@@ -8,10 +8,10 @@ MyReads makes it easy for you to keep track of books by allowing you keep book r
 
 You can search for new books to add in, so you will never forget the books you have already read, or lose the books you want to read ever again!
 
-To install the project:
+To install the project with yarn:
 * download the project
-* install all project dependencies with `npm install`
-* start the development server with `npm start`
+* install all project dependencies with `yarn install`
+* start the development server with `yarn start`
 
 ## Project Purpose
 
